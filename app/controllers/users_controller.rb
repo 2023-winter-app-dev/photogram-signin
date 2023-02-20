@@ -68,10 +68,11 @@ class UsersController < ApplicationController
     user_password = params["input_password"]
     db_user = User.where({ :username => user_name })[0]
     if db_user == nil
-      redirect("/user_sign_in", { :alert => "No one by that name 'round these parts" })
+      redirect_to("/user_sign_in", { :alert => "No one by that name 'round these parts" })
     else
       if db_user.authenticate(user_password)
         redirect_to("/", { :notice => "Welcome back, " + user_name + "!" })
+        session.store(:user_id, db_user.id)
       else
         redirect_to("/user_sign_in", { :alert => "Password does not match user account" })
       end
